@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="bottom"
+    android:background="@drawable/control_background"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:padding="25dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp">
+        <ImageButton
+            android:id="@+id/ib_control_left"
+            android:layout_centerVertical="true"
+            style="@style/move_control_style"
+            tools:src="@drawable/control_shape_circle_green" />
+        <ImageButton
+            android:id="@+id/ib_control_top"
+            android:layout_centerHorizontal="true"
+            style="@style/move_control_style"
+            tools:src="@drawable/control_shape_circle_red" />
+        <ImageButton
+            android:id="@+id/ib_control_right"
+            style="@style/move_control_style"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            tools:src="@drawable/control_shape_circle_yellow" />
+        <ImageButton
+            android:id="@+id/ib_control_bottom"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            style="@style/move_control_style"
+            tools:src="@drawable/control_shape_circle_blue" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/ib_action"
+        android:layout_alignParentRight="true"
+        style="@style/action_control_style"
+        android:layout_marginRight="50dp"
+        android:layout_centerVertical="true"
+        tools:src="@drawable/control_shape_circle_red" />
+</RelativeLayout>
