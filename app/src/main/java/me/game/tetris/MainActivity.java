@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements GameControl.Event
 				mScoreView.setLayoutParams(mScoreView.getLayoutParams());
 			}
 		});
+		mGameView.setGameControl(mGameControl);
+		mGameView.startGame();
 	}
 
 	@Override

@@ -16,7 +16,11 @@ public class Element {
 	private int x;
 	private int y;
 
-	int sizePx;
+	private int sizePx;
+	private float alpha = 1.0f;
+
+	private State state = State.FULL;
+
 	private static Drawable mDrawable;
 
 	public Element() {
@@ -25,6 +29,39 @@ public class Element {
 	public Element(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public Element setX(int x) {
+		this.x = x;
+		return this;
+	}
+
+	public Element setXY(int x, int y){
+		return setX(x).setY(y);
+	}
+
+	public Element setY(int y) {
+		this.y = y;
+		return this;
+	}
+
+	public Element setAlpha(float alpha) {
+		this.alpha = alpha;
+		return this;
+	}
+
+	public float getAlpha() {
+		return alpha;
+	}
+
+	public Element setState(State state) {
+		this.state = state;
+		setAlpha(state.alpha);
+		return this;
+	}
+
+	public State getState() {
+		return state;
 	}
 
 	public Drawable getElementDrawable(int sizePx){

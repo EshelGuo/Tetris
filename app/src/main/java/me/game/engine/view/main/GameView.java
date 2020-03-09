@@ -9,6 +9,8 @@ import android.view.View;
 
 import java.util.List;
 
+import me.game.engine.control.GameControl;
+
 /**
  * Created by guoshiwen on 2020/3/8.
  */
@@ -26,6 +28,7 @@ public class GameView extends View {
 	private int height;
 
 	protected int gap = 2;//px
+	private GameControl mGameControl;
 
 	public GameView(Context context) {
 		this(context, null);
@@ -40,8 +43,13 @@ public class GameView extends View {
 		setBackgroundColor(Setting.BASEIC_BACKGROUND);
 		onCreate();
 		if(mScreen == null){
-			mScreen = new Screen();
+			mScreen = new Screen(this);
 		}
+	}
+
+	public void startGame(){
+		//TODO 需与计分面板绑定
+		mScreen.onGameStarted();
 	}
 
 	public void onCreate(){
@@ -87,18 +95,31 @@ public class GameView extends View {
 	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
-		List<Element> elements = mScreen.getElements();
-		if(elements == null || elements.isEmpty()){
-			return;
-		}
+		mScreen.onDraw(canvas);
+	}
 
-
+	public void drawSprite(Canvas canvas, Sprite sprite) {
+		if(sprite == null) return;
+		int elementSize = mScreen.getElementSizePx();
+		List<Element> elements = sprite.getElements();
+		if(elements == null) return;
+		int offsetX = sprite.getX();
+		int offsetY = sprite.getY();
 		for (Element element : elements) {
-			drawElement(canvas, element);
+			int left = (element.getX() + offsetX) * elementSize;
+			int top = (element.getY() + offsetY) * elementSize;
+			int right = left + elementSize;
+			int bottom = top + elementSize;
+
+			Drawable drawable = element.getElementDrawable(elementSize);
+			drawable.setAlpha((int) (element.getAlpha() * 255));
+			drawable.setBounds(left + gap, top + gap, right - gap, bottom - gap);
+			drawable.draw(canvas);
 		}
 	}
 
-	private void drawElement(Canvas canvas, Element element) {
+	public void drawElement(Canvas canvas, Element element) {
+		if(element == null) return;
 		int elementSize = mScreen.getElementSizePx();
 		int left = element.getX() * elementSize;
 		int top = element.getY() * elementSize;
@@ -106,7 +127,16 @@ public class GameView extends View {
 		int bottom = top + elementSize;
 
 		Drawable drawable = element.getElementDrawable(elementSize);
+		drawable.setAlpha((int) (element.getAlpha() * 255));
 		drawable.setBounds(left + gap, top + gap, right - gap, bottom - gap);
 		drawable.draw(canvas);
+	}
+
+	public void setGameControl(GameControl gameControl) {
+		mGameControl = gameControl;
+	}
+
+	public GameControl getGameControl() {
+		return mGameControl;
 	}
 }

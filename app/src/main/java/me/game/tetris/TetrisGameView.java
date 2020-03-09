@@ -24,6 +24,6 @@ public class TetrisGameView extends GameView {
 
 	@Override
 	public void onCreate() {
-		mScreen = new TetrisScreen();
+		mScreen = new TetrisScreen(this);
 	}
 }
