@@ -100,22 +100,7 @@ public class GameView extends View {
 
 	public void drawSprite(Canvas canvas, Sprite sprite) {
 		if(sprite == null) return;
-		int elementSize = mScreen.getElementSizePx();
-		List<Element> elements = sprite.getElements();
-		if(elements == null) return;
-		int offsetX = sprite.getX();
-		int offsetY = sprite.getY();
-		for (Element element : elements) {
-			int left = (element.getX() + offsetX) * elementSize;
-			int top = (element.getY() + offsetY) * elementSize;
-			int right = left + elementSize;
-			int bottom = top + elementSize;
-
-			Drawable drawable = element.getElementDrawable(elementSize);
-			drawable.setAlpha((int) (element.getAlpha() * 255));
-			drawable.setBounds(left + gap, top + gap, right - gap, bottom - gap);
-			drawable.draw(canvas);
-		}
+		sprite.onDraw(canvas, gap, 0, 0);
 	}
 
 	public void drawElement(Canvas canvas, Element element) {
@@ -130,6 +115,13 @@ public class GameView extends View {
 		drawable.setAlpha((int) (element.getAlpha() * 255));
 		drawable.setBounds(left + gap, top + gap, right - gap, bottom - gap);
 		drawable.draw(canvas);
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		if(mScreen != null)
+			mScreen.onGameStoped();
 	}
 
 	public void setGameControl(GameControl gameControl) {

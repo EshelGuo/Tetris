@@ -39,10 +39,10 @@ public class LSprite extends TetrisSprite{
 			void changeState(List<Element> elements) {
 				width = 3;
 				height = 2;
-				elements.get(0).setX(1).setY(0);
-				elements.get(1).setX(1).setY(1);
-				elements.get(2).setX(1).setY(2);
-				elements.get(3).setX(0).setY(2);
+				elements.get(0).setX(2).setY(0);
+				elements.get(1).setX(2).setY(1);
+				elements.get(2).setX(1).setY(1);
+				elements.get(3).setX(0).setY(1);
 			}
 		});
 		//■

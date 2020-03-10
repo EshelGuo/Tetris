@@ -28,7 +28,7 @@ public class SSprite extends TetrisSprite{
 				elements.get(0).setXY(0, 1);
 				elements.get(1).setXY(1, 0);
 				elements.get(2).setXY(1, 1);
-				elements.get(3).setXY(0, 2);
+				elements.get(3).setXY(2, 0);
 			}
 		});
 		// ■

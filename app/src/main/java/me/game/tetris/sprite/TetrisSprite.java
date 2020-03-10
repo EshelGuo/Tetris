@@ -1,6 +1,5 @@
 package me.game.tetris.sprite;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,10 +16,12 @@ import me.game.engine.view.main.Sprite;
  */
 public abstract class TetrisSprite extends Sprite {
 
-	private LinkedList<TetrisState> mStates;
-	private Iterator<TetrisState> mIterator;
+	private List<TetrisState> mStates;
+
+	private int index = 0;
 
 	private TetrisState startState;
+	private Backup mBackup = new Backup();
 
 	public TetrisSprite(Screen screen) {
 		super(screen);
@@ -42,15 +43,15 @@ public abstract class TetrisSprite extends Sprite {
 		}
 		onSubCreate();
 		if(startState == null){
-			startState = mStates.getFirst();
+			startState = mStates.get(0);
 		}
-		if(mIterator == null){
-			mIterator = mStates.iterator();
-		}
-		while (mIterator.hasNext()){
-			TetrisState next = mIterator.next();
+
+		for (int i = 0; i < mStates.size(); i++) {
+			TetrisState next = mStates.get(i);
 			if(next == startState){
 				next.changeState(mElements);
+				index = i;
+				break;
 			}
 		}
 	}
@@ -61,23 +62,44 @@ public abstract class TetrisSprite extends Sprite {
 		return 4;
 	}
 
+	private int nextIndex(){
+		index++;
+		if(index >= mStates.size()){
+			index = 0;
+		}
+		return index;
+	}
+
 	//向右旋转
 	public void spin(){
 		if(mStates.size() <= 1){
 			return;
 		}
-		if(mIterator == null) mIterator = mStates.iterator();
-		if(mIterator.hasNext()){
-			mIterator.next().changeState(mElements);
-		}else {
-			mIterator = mStates.iterator();
-			spin();
-		}
-		update();
+		int index = nextIndex();
+		mStates.get(index).changeState(mElements);
+	}
+
+	public void save(){
+		mBackup.index = index;
+		mBackup.x = x;
+		mBackup.y = y;
+	}
+
+	public void restore(){
+		index = mBackup.index;
+		x = mBackup.x;
+		y = mBackup.y;
+		mStates.get(index).changeState(mElements);
 	}
 
 	public abstract class TetrisState {
 //		private int state;
 		abstract void changeState(List<Element> elements);
+	}
+
+	private class Backup {
+		int index;
+		int x;
+		int y;
 	}
 }

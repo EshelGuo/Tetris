@@ -32,6 +32,10 @@ public class Screen {
 
 	}
 
+	public void onGameStoped(){
+
+	}
+
 	protected GameControl getGameControl(){
 		return mGameView.getGameControl();
 	}
