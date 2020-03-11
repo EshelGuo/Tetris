@@ -61,7 +61,7 @@ public class MatrixSprite extends Sprite {
 		return line;
 	}
 
-	public void addSprite(Sprite sprite, final Runnable callback){
+	public void addSprite(Sprite sprite, final Callback callback){
 		final List<LineSprite> fullLines = new ArrayList<>(3);
 		List<Element> elements = sprite.getElements();
 		for (Element element : elements) {
@@ -72,7 +72,7 @@ public class MatrixSprite extends Sprite {
 			}
 		}
 		if(fullLines.isEmpty()){
-			callback.run();
+			callback.run(0);
 			return;
 		}
 		ClearAnimation animation = new ClearAnimation();
@@ -88,7 +88,7 @@ public class MatrixSprite extends Sprite {
 			@Override
 			public void onAnimationEnd() {
 				removeFullLines(fullLines);
-				callback.run();
+				callback.run(fullLines.size());
 			}
 		});
 		animation.start();
@@ -124,5 +124,9 @@ public class MatrixSprite extends Sprite {
 			}
 		}
 
+	}
+
+	public interface Callback{
+		void run(int lineNumber);
 	}
 }

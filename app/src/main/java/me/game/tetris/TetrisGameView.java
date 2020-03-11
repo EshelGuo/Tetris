@@ -26,4 +26,10 @@ public class TetrisGameView extends GameView {
 	public void onCreate() {
 		mScreen = new TetrisScreen(this);
 	}
+
+	public void setScoreView(TetrisScoreView scoreView) {
+		if(mScreen instanceof TetrisScreen){
+			((TetrisScreen) mScreen).setScoreView(scoreView);
+		}
+	}
 }

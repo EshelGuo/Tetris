@@ -36,9 +36,14 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 	private long sinkTime = 1000;
 	private SinkTask mSinkTask = new SinkTask();
 	private MatrixSprite mMatrixSprite;
+	private TetrisScoreView mScoreView;
 
 	public TetrisScreen(GameView gameView) {
 		super(gameView);
+	}
+
+	public void setScoreView(TetrisScoreView scoreView) {
+		mScoreView = scoreView;
 	}
 
 	@Override
@@ -52,21 +57,22 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 	public void onGameStarted() {
 		getGameControl().setEvent(this);
 		currentTetris = randomTetris();
+		mScoreView.setNext(randomTetris());
 		update();
 		mHandler.postDelayed(mSinkTask, sinkTime);
 	}
 
-	private TetrisSprite randomTetris(){
+	private TetrisSprite randomTetris() {
 		int index = mRandom.nextInt(SEED.length);
 		TetrisSprite sprite = crateTetris(SEED[index]);
-		if(sprite == null) return null;
+		if (sprite == null) return null;
 		sprite.setX((width - sprite.getWidth()) / 2);
 		sprite.setY(0);
 		return sprite;
 	}
 
-	private TetrisSprite crateTetris(char seed){
-		switch (seed){
+	private TetrisSprite crateTetris(char seed) {
+		switch (seed) {
 			case 'I':
 				return new ISprite(this);
 			case 'J':
@@ -93,12 +99,12 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 
 	@Override
 	public void onLeft() {
-		if(currentTetris != null){
+		if (currentTetris != null) {
 			int x = currentTetris.getX();
-			if(x == 0) return;
+			if (x == 0) return;
 			currentTetris.save();
 			currentTetris.setX(x - 1);
-			if(mMatrixSprite.hasOverlapping(currentTetris)){
+			if (mMatrixSprite.hasOverlapping(currentTetris)) {
 				currentTetris.restore();
 				return;
 			}
@@ -108,12 +114,12 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 
 	@Override
 	public void onRight() {
-		if(currentTetris != null){
+		if (currentTetris != null) {
 			int x = currentTetris.getX();
-			if(x + currentTetris.getWidth() == width) return;
+			if (x + currentTetris.getWidth() == width) return;
 			currentTetris.save();
 			currentTetris.setX(x + 1);
-			if(mMatrixSprite.hasOverlapping(currentTetris)){
+			if (mMatrixSprite.hasOverlapping(currentTetris)) {
 				currentTetris.restore();
 				return;
 			}
@@ -128,11 +134,11 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 
 	@Override
 	public void onBottom() {
-		if(sinkOver()){
+		if (sinkOver()) {
 			saveCurrentAndShowNextTeris();
 			return;
 		}
-		if(currentTetris != null){
+		if (currentTetris != null) {
 			currentTetris.setY(currentTetris.getY() + 1);
 		}
 		update();
@@ -140,7 +146,7 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 
 	@Override
 	public void onAction() {
-		if(currentTetris != null){
+		if (currentTetris != null) {
 			int w1 = currentTetris.getWidth();
 			int h1 = currentTetris.getHeight();
 
@@ -149,27 +155,43 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 			int w2 = currentTetris.getWidth();
 			int h2 = currentTetris.getHeight();
 //			currentTetris.setX((w1 - w2) / 2);
-			if(w2 + currentTetris.getX() > this.width){
+			if (w2 + currentTetris.getX() > this.width) {
 				currentTetris.setX(this.width - w2);
 			}
-			if(mMatrixSprite.hasOverlapping(currentTetris)){
+			if (mMatrixSprite.hasOverlapping(currentTetris)) {
 				currentTetris.restore();
-			}else {
+			} else {
 				update();
 			}
 		}
 	}
 
 
-
-	private void saveCurrentAndShowNextTeris(){
+	private void saveCurrentAndShowNextTeris() {
 		mHandler.removeCallbacks(mSinkTask);
 		Sprite sprite = currentTetris;
 		currentTetris = null;
-		mMatrixSprite.addSprite(sprite, new Runnable() {
+		mMatrixSprite.addSprite(sprite, new MatrixSprite.Callback() {
 			@Override
-			public void run() {
-				currentTetris = randomTetris();
+			public void run(int lineNumber) {
+				switch (lineNumber) {
+					case 0:
+						mScoreView.changeScore(TetrisScoreView.Score.ONE);
+						break;
+					case 1:
+						mScoreView.changeScore(TetrisScoreView.Score.LINE);
+						break;
+					case 2:
+						mScoreView.changeScore(TetrisScoreView.Score.LINE_2);
+						break;
+					case 3:
+						mScoreView.changeScore(TetrisScoreView.Score.LINE_3);
+						break;
+					default:
+						mScoreView.changeScore(TetrisScoreView.Score.LINE_4);
+						break;
+				}
+				currentTetris = mScoreView.setNext(randomTetris());
 				update();
 				mHandler.postDelayed(mSinkTask, sinkTime);
 			}
@@ -180,7 +202,7 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 
 		@Override
 		public void run() {
-			if(sinkOver()){
+			if (sinkOver()) {
 				saveCurrentAndShowNextTeris();
 				return;
 			}
@@ -191,20 +213,20 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 	}
 
 	private boolean sinkOver() {
-		if(currentTetris == null) return false;
+		if (currentTetris == null) return false;
 
-		if(currentTetris.bottom() == height - 1){
+		if (currentTetris.bottom() == height - 1) {
 			return true;
 		}
 
 		List<Element> elements = currentTetris.getElements();
 		for (Element element : elements) {
 			int elementY = currentTetris.getElementY(element);
-			if(elementY >= height - 1){
+			if (elementY >= height - 1) {
 				return true;
 			}
 			LineSprite line = mMatrixSprite.getLine(elementY + 1);
-			if(line.hasElement(currentTetris.getElementX(element))) return true;
+			if (line.hasElement(currentTetris.getElementX(element))) return true;
 		}
 		return false;
 	}

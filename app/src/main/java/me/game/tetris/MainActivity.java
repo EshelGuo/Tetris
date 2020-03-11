@@ -12,8 +12,8 @@ import me.game.engine.view.score.ScoreView;
 public class MainActivity extends AppCompatActivity implements GameControl.Event {
 
 	private GameControl mGameControl;
-	private GameView mGameView;
-	private ScoreView mScoreView;
+	private TetrisGameView mGameView;
+	private TetrisScoreView mScoreView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements GameControl.Event
 			}
 		});
 		mGameView.setGameControl(mGameControl);
+		mGameView.setScoreView(mScoreView);
 		mGameView.startGame();
 	}
 

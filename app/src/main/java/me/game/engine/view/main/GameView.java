@@ -17,6 +17,7 @@ import me.game.engine.control.GameControl;
 public class GameView extends View {
 
 	public static final String TAG = "GameView";
+	public static final int DEFAULT_GAP = 2;//PX
 
 	protected Screen mScreen;
 
@@ -27,7 +28,7 @@ public class GameView extends View {
 	private int width;
 	private int height;
 
-	protected int gap = 2;//px
+	protected int gap = DEFAULT_GAP;//px
 	private GameControl mGameControl;
 
 	public GameView(Context context) {

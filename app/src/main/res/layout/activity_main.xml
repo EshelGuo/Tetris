@@ -25,9 +25,8 @@
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="400dp"/>
-            <me.game.engine.view.score.ScoreView
+            <me.game.tetris.TetrisScoreView
                 android:id="@+id/score_view"
-                android:background="#9AA987"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="400dp"/>
