@@ -141,11 +141,16 @@ public class TetrisScreen extends Screen implements GameControl.Event {
 	@Override
 	public void onAction() {
 		if(currentTetris != null){
+			int w1 = currentTetris.getWidth();
+			int h1 = currentTetris.getHeight();
+
 			currentTetris.save();
 			currentTetris.spin();
 			int w2 = currentTetris.getWidth();
-			if(w2 + currentTetris.getX() > width){
-				currentTetris.setX(width - w2);
+			int h2 = currentTetris.getHeight();
+//			currentTetris.setX((w1 - w2) / 2);
+			if(w2 + currentTetris.getX() > this.width){
+				currentTetris.setX(this.width - w2);
 			}
 			if(mMatrixSprite.hasOverlapping(currentTetris)){
 				currentTetris.restore();

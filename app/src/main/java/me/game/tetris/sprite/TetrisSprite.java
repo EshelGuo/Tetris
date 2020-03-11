@@ -27,7 +27,7 @@ public abstract class TetrisSprite extends Sprite {
 		super(screen);
 	}
 
-	public void addState(TetrisState state){
+	public void addState(TetrisState state) {
 		mStates.add(state);
 	}
 
@@ -42,13 +42,13 @@ public abstract class TetrisSprite extends Sprite {
 			mElements.add(new Element());
 		}
 		onSubCreate();
-		if(startState == null){
+		if (startState == null) {
 			startState = mStates.get(0);
 		}
 
 		for (int i = 0; i < mStates.size(); i++) {
 			TetrisState next = mStates.get(i);
-			if(next == startState){
+			if (next == startState) {
 				next.changeState(mElements);
 				index = i;
 				break;
@@ -58,34 +58,34 @@ public abstract class TetrisSprite extends Sprite {
 
 	public void onSubCreate(){}
 
-	public int size(){
+	public int size() {
 		return 4;
 	}
 
-	private int nextIndex(){
+	private int nextIndex() {
 		index++;
-		if(index >= mStates.size()){
+		if (index >= mStates.size()) {
 			index = 0;
 		}
 		return index;
 	}
 
 	//向右旋转
-	public void spin(){
-		if(mStates.size() <= 1){
+	public void spin() {
+		if (mStates.size() <= 1) {
 			return;
 		}
 		int index = nextIndex();
 		mStates.get(index).changeState(mElements);
 	}
 
-	public void save(){
+	public void save() {
 		mBackup.index = index;
 		mBackup.x = x;
 		mBackup.y = y;
 	}
 
-	public void restore(){
+	public void restore() {
 		index = mBackup.index;
 		x = mBackup.x;
 		y = mBackup.y;
@@ -93,7 +93,7 @@ public abstract class TetrisSprite extends Sprite {
 	}
 
 	public abstract class TetrisState {
-//		private int state;
+		//		private int state;
 		abstract void changeState(List<Element> elements);
 	}
 
