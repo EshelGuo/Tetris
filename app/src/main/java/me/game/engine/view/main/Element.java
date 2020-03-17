@@ -17,11 +17,13 @@ public class Element {
 	private int y;
 
 	private int sizePx;
+	private int scoreSizePx;
 	private float alpha = 1.0f;
 
 	private State state = State.FULL;
 
 	private static Drawable mDrawable;
+	private static Drawable mScoreDrawable;
 
 	public Element() {
 	}
@@ -70,6 +72,14 @@ public class Element {
 			this.sizePx = sizePx;
 		}
 		return mDrawable;
+	}
+
+	public Drawable getScoreElementDrawable(int sizePx){
+		if(this.scoreSizePx != sizePx){
+			mScoreDrawable = createElementDrawable(sizePx);
+			this.scoreSizePx = sizePx;
+		}
+		return mScoreDrawable;
 	}
 
 	private Drawable createElementDrawable(int sizePx){

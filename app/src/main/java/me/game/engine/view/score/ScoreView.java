@@ -78,7 +78,7 @@ public class ScoreView extends View {
 		int right = left + elementSize;
 		int bottom = top + elementSize;
 
-		Drawable drawable = element.getElementDrawable(elementSize);
+		Drawable drawable = element.getScoreElementDrawable(elementSize);
 		drawable.setAlpha((int) (element.getAlpha() * 255));
 		drawable.setBounds(left + gap, top + gap, right - gap, bottom - gap);
 		drawable.draw(canvas);
